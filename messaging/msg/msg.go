@@ -5,16 +5,16 @@ package msg
 import "encoding/json"
 
 type Msg struct {
-	SenderID  string          `json:"sender"`
-	Signature string          `json:"signature"`
-	Contents  json.RawMessage `json:"contents"`
+	SenderID       string          `json:"sender"`
+	Signature      string          `json:"signature"`
+	Contents       json.RawMessage `json:"contents"`
+	ContentsFormat int8            `json:"format"`
+	ContentsKind   int8            `json:"kind"`
 }
 
-func New(VisitFns ...VisitFunc) *Msg {
+func New(opts ...Option) *Msg {
 	m := new(Msg)
-	for _, visit := range VisitFns {
-		visit(m)
-	}
+	applyOptions(m, opts)
 
 	return m
 }

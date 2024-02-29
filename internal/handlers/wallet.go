@@ -6,7 +6,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"taheri24.ir/blockchain/internal/cmd/wallet"
+	"taheri24.ir/blockchain/wallet"
+	"taheri24.ir/blockchain/wallet/collection"
 )
 
 type CreateWalletRequest struct {
@@ -22,10 +23,10 @@ type CreateWalletRequest struct {
 	} `json:"addrInfo"`
 }
 type CreateWalletResponse struct {
-	ID string `json:"ID"`
+	ID wallet.ID `json:"ID"`
 }
 
-var walletCollection *wallet.Collection
+var walletCollection *collection.Collection
 
 func validateCreateWalletRequest(req *CreateWalletRequest) error {
 	dat, err := base64.StdEncoding.DecodeString(req.PublicKeyBase64)
@@ -33,7 +34,7 @@ func validateCreateWalletRequest(req *CreateWalletRequest) error {
 		return fmt.Errorf("decode publicKeyBase64 failed,fieldName:%q,innerError:%w", err)
 	}
 	req.publicKey = dat
-
+	return nil
 }
 
 var CreateWallet http.HandlerFunc = func(w http.ResponseWriter, r *http.Request) {

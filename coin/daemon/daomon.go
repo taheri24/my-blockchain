@@ -23,12 +23,7 @@ func (d *Daemon) Verify(c *coin.Coin) {
 	}
 
 	c.Verified = true
-	d.MinerOps.syncLock.Lock()
-	defer d.MinerOps.syncLock.Unlock()
 
-	for minerID, code := range c.Codes {
-		d.MinerOps.data[minerID] = append(d.MinerOps.data[minerID], code)
-	}
 }
 
 func (d *Daemon) Transfer(c *coin.Coin) {
